@@ -7,10 +7,12 @@ namespace Api.Controllers;
 public abstract class AbstractController : ControllerBase
 {
     private readonly IMapper _mapper;
+    private readonly ILogger _logger;
 
-    protected AbstractController(IMapper mapper)
+    protected AbstractController(IMapper mapper, ILogger logger)
     {
         _mapper = mapper;
+        _logger = logger;
     }
 
     protected async Task<ActionResult> Handle<T>(Func<Task<object?>> predicate)
@@ -37,7 +39,7 @@ public abstract class AbstractController : ControllerBase
         catch (Exception ex)
         {
             result.Error = ex.Message ?? "Internal Server Error";
-            Console.Error.WriteLine(ex.ToString()); // Log an exception
+            _logger.LogError(ex, "Error");
 
             return StatusCode(StatusCodes.Status500InternalServerError, result);
         }

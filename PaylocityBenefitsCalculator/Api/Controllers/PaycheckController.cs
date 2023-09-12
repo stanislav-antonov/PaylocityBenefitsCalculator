@@ -13,8 +13,9 @@ public class PaycheckController : AbstractController
 {
     private readonly IPaycheckService _paycheckService;
 
-    public PaycheckController(IPaycheckService paycheckService, IMapper mapper) 
-        : base(mapper)
+    public PaycheckController(IPaycheckService paycheckService, IMapper mapper, 
+        ILogger<PaycheckController> logger) 
+        : base(mapper, logger)
     {
         _paycheckService = paycheckService;
     }

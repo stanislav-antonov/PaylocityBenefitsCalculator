@@ -18,6 +18,7 @@ internal class Program
         AddSwagger(builder);
         AddCORS(builder);
         AddMapper(builder);
+        AddLogging(builder);
 
         AddRepositories(builder);
         AddDomainServices(builder);
@@ -86,5 +87,11 @@ internal class Program
     private static void AddDomainServices(WebApplicationBuilder builder)
     {
         builder.Services.AddSingleton<IPaycheckService, PaycheckService>();
+    }
+
+    private static void AddLogging(WebApplicationBuilder builder)
+    {
+        builder.Logging.ClearProviders();
+        builder.Logging.AddConsole();
     }
 }

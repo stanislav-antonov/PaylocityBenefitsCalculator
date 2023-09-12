@@ -13,8 +13,9 @@ public class DependentsController : AbstractController
 {
     private readonly IDependentsRepository _dependentsRepository;
 
-    public DependentsController(IDependentsRepository dependentsRepository, IMapper mapper)
-        : base(mapper)
+    public DependentsController(IDependentsRepository dependentsRepository, IMapper mapper, 
+        ILogger<DependentsController> logger)
+        : base(mapper, logger)
     {
         _dependentsRepository = dependentsRepository;
     }

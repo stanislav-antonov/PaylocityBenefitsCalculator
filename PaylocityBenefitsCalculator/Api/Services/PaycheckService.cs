@@ -14,8 +14,8 @@ public class PaycheckService : IPaycheckService
     private decimal employeeCostPerMonth = 1000;
 
     // employees that make more than $80,000 per year will incur an additional 2% of their yearly salary in benefits costs
-    private decimal employeeYealySalaryThreshold = 80000;
-    private int employeeYearlySalaryAddition = 2;
+    private decimal employeeSalaryThreshold = 80000;
+    private int employeeSalaryPercent = 2;
 
     // each dependent represents an additional $600 cost per month (for benefits)
     private decimal dependentCostPerMonth = 600;
@@ -42,48 +42,49 @@ public class PaycheckService : IPaycheckService
         // An employee may only have 1 spouse or domestic partner (not both)
         var isValid = employee.Dependents.Count(d => d.Relationship == Relationship.Spouse 
             || d.Relationship == Relationship.DomesticPartner) <= 1;
+        
         if (!isValid)
         {
-            throw new ApplicationException($"Unable to calculate a paycheck for employee id {employeeId}");
+            throw new ApplicationException($"Unable to calculate a paycheck for an employee id {employeeId}");
         }
 
-        decimal employeeYearlyGrossSalary = employee.Salary;
-        decimal employeeYearlyNetSalary = employeeYearlyGrossSalary;
-        decimal employeeGrossPay = employeeYearlyGrossSalary / payPeriods;
+        decimal employeeGrossSalary = employee.Salary;
+        decimal employeeNetSalary = employeeGrossSalary;
+        decimal employeeGrossPay = employeeGrossSalary / payPeriods;
 
-        // Employees that make more than _employeeYealySalaryAmountThreshold_ per year will incur
-        // an additional _employeeYearlySalaryAddition_ of their yearly salary in benefits costs
-        if (employeeYearlyGrossSalary > employeeYealySalaryThreshold)
+        // Employees that make more than {employeeSalaryThreshold} per year will incur
+        // an additional {employeeSalaryPercent} of their yearly salary in benefits costs
+        if (employeeGrossSalary > employeeSalaryThreshold)
         {
-            employeeYearlyNetSalary -= (employeeYearlyNetSalary * (employeeYearlySalaryAddition / 100));
+            employeeNetSalary -= (employeeNetSalary * (employeeSalaryPercent / 100));
         }
 
         // Employee's base cost per month (for benefits)
-        employeeYearlyNetSalary -= (12 * employeeCostPerMonth);
+        employeeNetSalary -= (12 * employeeCostPerMonth);
 
         foreach (var dependent in employee.Dependents)
         {
             // Each dependent represents an additional {dependentCostPerMonth} cost
             // per month (for benefits)
-            employeeYearlyNetSalary -= (12 * dependentCostPerMonth);
+            employeeNetSalary -= (12 * dependentCostPerMonth);
 
             // Dependents that are over {dependentAgeThreshold} years old will incur
             // an additional {dependentAgeCostPerMonth} per month
             if (dependent.DateOfBirth.Age() > dependentAgeThreshold)
             {
-                employeeYearlyNetSalary -= (12 * dependentAgeCostPerMonth);
+                employeeNetSalary -= (12 * dependentAgeCostPerMonth);
             }
         }
 
-        decimal employeeNetPay = employeeYearlyNetSalary / payPeriods;
+        decimal employeeNetPay = employeeNetSalary / payPeriods;
 
         return new Paycheck()
         {
             EmployeeId = employeeId,
-            EmployeeNetPay = employeeNetPay,
-            EmployeeGrossPay = employeeGrossPay,
-            EmployeeYearlyGrossSalary = employeeYearlyGrossSalary,
-            EmployeeYearlyNetSalary = employeeYearlyNetSalary,
+            EmployeeGrossPay = Decimal.Round(employeeGrossPay, 2),
+            EmployeeNetPay = Decimal.Round(employeeNetPay, 2),
+            EmployeeGrossSalary = Decimal.Round(employeeGrossSalary, 2),
+            EmployeeNetSalary = Decimal.Round(employeeNetSalary, 2),
             PayPeriods = payPeriods
         };
     }
