@@ -9,13 +9,13 @@ public class PaycheckCalcParamsRepository : IPaycheckCalcParamsRepository
     {
         var paycheckCalcParams = new PaycheckCalcParams()
         {
-            PayPeriodsPerYear = FakeData.payPeriodsPerYear,
-            EmployeeCostPerMonth = FakeData.employeeCostPerMonth,
-            EmployeeSalaryThreshold = FakeData.employeeSalaryThreshold,
-            EmployeeSalaryPercent = FakeData.employeeSalaryPercent,
-            DependentCostPerMonth = FakeData.dependentCostPerMonth,
-            DependentAgeThreshold = FakeData.dependentAgeThreshold,
-            DependentAgeCostPerMonth = FakeData.dependentCostPerMonth,
+            PayPeriodsPerYear = StaticMockData.payPeriodsPerYear,
+            EmployeeCostPerMonth = StaticMockData.employeeCostPerMonth,
+            EmployeeSalaryThreshold = StaticMockData.employeeSalaryThreshold,
+            EmployeeSalaryPercent = StaticMockData.employeeSalaryPercent,
+            DependentCostPerMonth = StaticMockData.dependentCostPerMonth,
+            DependentAgeThreshold = StaticMockData.dependentAgeThreshold,
+            DependentAgeCostPerMonth = StaticMockData.dependentCostPerMonth,
         }; 
 
         return await Task.FromResult(paycheckCalcParams);

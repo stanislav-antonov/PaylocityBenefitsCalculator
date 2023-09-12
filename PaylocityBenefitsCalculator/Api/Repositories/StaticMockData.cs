@@ -2,7 +2,7 @@
 
 namespace Api.Repository
 {
-    public static class FakeData
+    public static class StaticMockData
     {
         // 26 paychecks per year with deductions spread as evenly as possible on each paycheck
         public const int payPeriodsPerYear = 26;

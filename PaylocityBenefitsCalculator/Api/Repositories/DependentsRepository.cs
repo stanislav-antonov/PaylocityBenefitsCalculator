@@ -6,7 +6,7 @@ namespace Api.Repository
     {
         public async Task<IEnumerable<Dependent>> GetAll()
         {
-            return await Task.FromResult(FakeData.Dependents);
+            return await Task.FromResult(StaticMockData.Dependents);
         }
 
         public async Task<Dependent?> Get(int id)
