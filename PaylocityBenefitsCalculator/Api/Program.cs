@@ -1,4 +1,5 @@
 using Api;
+using Api.Repositories;
 using Api.Repository;
 using Api.Services;
 using AutoMapper;
@@ -82,6 +83,7 @@ internal class Program
     {
         builder.Services.AddSingleton<IEmployeesRepository, EmployeesRepository>();
         builder.Services.AddSingleton<IDependentsRepository, DependentsRepository>();
+        builder.Services.AddSingleton<IPaycheckCalcParamsRepository, PaycheckCalcParamsRepository>();
     }
 
     private static void AddDomainServices(WebApplicationBuilder builder)

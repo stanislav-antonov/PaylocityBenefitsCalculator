@@ -1,34 +1,19 @@
 ﻿using Api.Models;
+using Api.Repositories;
 using Api.Repository;
 
 namespace Api.Services;
 
 public class PaycheckService : IPaycheckService
 {
-    // put the following into configuration, should be extendable
-
-    // 26 paychecks per year with deductions spread as evenly as possible on each paycheck
-    private const int payPeriods = 26;
-
-    // employees have a base cost of $1,000 per month(for benefits)
-    private decimal employeeCostPerMonth = 1000;
-
-    // employees that make more than $80,000 per year will incur an additional 2% of their yearly salary in benefits costs
-    private decimal employeeSalaryThreshold = 80000;
-    private int employeeSalaryPercent = 2;
-
-    // each dependent represents an additional $600 cost per month (for benefits)
-    private decimal dependentCostPerMonth = 600;
-
-    // dependents that are over 50 years old will incur an additional $200 per month
-    private int dependentAgeThreshold = 50;
-    private decimal dependentAgeCostPerMonth = 200;
-
     private readonly IEmployeesRepository _employeesRepository;
+    private readonly IPaycheckCalcParamsRepository _paycheckCalcParamsRepository;
 
-    public PaycheckService(IEmployeesRepository employeesRepository)
+    public PaycheckService(IEmployeesRepository employeesRepository, 
+        IPaycheckCalcParamsRepository paycheckCalcParamsRepository)
     {
         _employeesRepository = employeesRepository;
+        _paycheckCalcParamsRepository = paycheckCalcParamsRepository;
     }
 
     public async Task<Paycheck?> CalculatePaycheck(int employeeId)
@@ -49,34 +34,36 @@ public class PaycheckService : IPaycheckService
         }
 
         decimal employeeGrossSalary = employee.Salary;
-        decimal employeeNetSalary = employeeGrossSalary;
-        decimal employeeGrossPay = employeeGrossSalary / payPeriods;
+        decimal employeeNetSalary = employee.Salary;
+
+        var @params = await _paycheckCalcParamsRepository.Get();
 
         // Employees that make more than {employeeSalaryThreshold} per year will incur
         // an additional {employeeSalaryPercent} of their yearly salary in benefits costs
-        if (employeeGrossSalary > employeeSalaryThreshold)
+        if (employeeGrossSalary > @params.EmployeeSalaryThreshold)
         {
-            employeeNetSalary -= (employeeNetSalary * (employeeSalaryPercent / 100));
+            employeeNetSalary -= employeeNetSalary * (decimal)(@params.EmployeeSalaryPercent * 0.01);
         }
 
         // Employee's base cost per month (for benefits)
-        employeeNetSalary -= (12 * employeeCostPerMonth);
+        employeeNetSalary -= (12 * @params.EmployeeCostPerMonth);
 
         foreach (var dependent in employee.Dependents)
         {
             // Each dependent represents an additional {dependentCostPerMonth} cost
             // per month (for benefits)
-            employeeNetSalary -= (12 * dependentCostPerMonth);
+            employeeNetSalary -= (12 * @params.DependentCostPerMonth);
 
             // Dependents that are over {dependentAgeThreshold} years old will incur
             // an additional {dependentAgeCostPerMonth} per month
-            if (dependent.DateOfBirth.Age() > dependentAgeThreshold)
+            if (dependent.DateOfBirth.Age() > @params.DependentAgeThreshold)
             {
-                employeeNetSalary -= (12 * dependentAgeCostPerMonth);
+                employeeNetSalary -= (12 * @params.DependentAgeCostPerMonth);
             }
         }
-
-        decimal employeeNetPay = employeeNetSalary / payPeriods;
+        
+        decimal employeeGrossPay = employeeGrossSalary / @params.PayPeriodsPerYear;
+        decimal employeeNetPay = employeeNetSalary / @params.PayPeriodsPerYear;
 
         return new Paycheck()
         {
@@ -85,7 +72,7 @@ public class PaycheckService : IPaycheckService
             EmployeeNetPay = Decimal.Round(employeeNetPay, 2),
             EmployeeGrossSalary = Decimal.Round(employeeGrossSalary, 2),
             EmployeeNetSalary = Decimal.Round(employeeNetSalary, 2),
-            PayPeriods = payPeriods
+            PayPeriods = @params.PayPeriodsPerYear,
         };
     }
 }

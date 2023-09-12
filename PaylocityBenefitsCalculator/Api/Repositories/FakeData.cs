@@ -4,6 +4,24 @@ namespace Api.Repository
 {
     public static class FakeData
     {
+        // 26 paychecks per year with deductions spread as evenly as possible on each paycheck
+        public const int payPeriodsPerYear = 26;
+
+        // Employees have a base cost of $1,000 per month(for benefits)
+        public const decimal employeeCostPerMonth = 1000;
+
+        // Employees that make more than $80,000 per year will incur an additional 2% of their
+        // yearly salary in benefits costs
+        public const decimal employeeSalaryThreshold = 80000;
+        public const int employeeSalaryPercent = 2;
+
+        // Each dependent represents an additional $600 cost per month (for benefits)
+        public const decimal dependentCostPerMonth = 600;
+
+        // Dependents that are over 50 years old will incur an additional $200 per month
+        public const int dependentAgeThreshold = 50;
+        public const decimal dependentAgeCostPerMonth = 200;
+
         public static List<Dependent> Dependents => new()
         {
             new()
