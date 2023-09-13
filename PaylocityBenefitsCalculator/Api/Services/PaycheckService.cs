@@ -12,7 +12,6 @@ public class PaycheckService : IPaycheckService
     private readonly IPaychecksRepository _paychecksRepository;
     private readonly IPaycheckProfilesRepository _paycheckProfilesRepository;
     
-
     public PaycheckService(IEmployeesRepository employeesRepository,
         IPaychecksRepository paychecksRepository,
         IPaycheckProfilesRepository paycheckProfilesRepository)

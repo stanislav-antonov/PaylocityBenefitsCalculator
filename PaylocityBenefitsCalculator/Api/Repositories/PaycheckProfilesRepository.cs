@@ -21,22 +21,4 @@ public class PaycheckProfilesRepository : IPaycheckProfilesRepository
     {
         return await _apiDbContext.PaycheckProfiles.FirstOrDefaultAsync(p => p.Id == id);
     }
-
-    /*
-    public async Task<PaycheckProfile> Get()
-    {
-        var paycheckCalcParams = new PaycheckProfile()
-        {
-            PayPeriodsPerYear = MockData.payPeriodsPerYear,
-            EmployeeCostPerMonth = MockData.employeeCostPerMonth,
-            EmployeeSalaryThreshold = MockData.employeeSalaryThreshold,
-            EmployeeSalaryPercent = MockData.employeeSalaryPercent,
-            DependentCostPerMonth = MockData.dependentCostPerMonth,
-            DependentAgeThreshold = MockData.dependentAgeThreshold,
-            DependentAgeCostPerMonth = MockData.dependentCostPerMonth,
-        }; 
-
-        return await Task.FromResult(paycheckCalcParams);
-    }
-    */
 }
