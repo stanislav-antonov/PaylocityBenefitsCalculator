@@ -6,4 +6,5 @@ public interface IPaychecksRepository
 {
     public Task<Paycheck?> Get(int id);
     public Task<IEnumerable<Paycheck>> GetAll();
+    public Task Add(Paycheck paycheck);
 }

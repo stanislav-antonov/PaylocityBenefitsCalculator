@@ -11,17 +11,15 @@ public class PaycheckService : IPaycheckService
     private readonly IEmployeesRepository _employeesRepository;
     private readonly IPaychecksRepository _paychecksRepository;
     private readonly IPaycheckProfilesRepository _paycheckProfilesRepository;
-    private readonly ApiDbContext _apiDbContext;
+    
 
     public PaycheckService(IEmployeesRepository employeesRepository,
         IPaychecksRepository paychecksRepository,
-        IPaycheckProfilesRepository paycheckProfilesRepository,
-        ApiDbContext apiDbContext)
+        IPaycheckProfilesRepository paycheckProfilesRepository)
     {
         _employeesRepository = employeesRepository;
         _paychecksRepository = paychecksRepository;
         _paycheckProfilesRepository = paycheckProfilesRepository;
-        _apiDbContext = apiDbContext;
     }
 
     public async Task<Paycheck?> CalculatePaycheck(int employeeId, bool store = false)
@@ -86,8 +84,7 @@ public class PaycheckService : IPaycheckService
 
         if (store)
         {
-            await _apiDbContext.Paychecks.AddAsync(paycheck);
-            await _apiDbContext.SaveChangesAsync();
+            await _paychecksRepository.Add(paycheck);
         }
         
         return paycheck;

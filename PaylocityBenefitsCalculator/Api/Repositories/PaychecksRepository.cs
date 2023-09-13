@@ -21,4 +21,10 @@ public class PaychecksRepository : IPaychecksRepository
     {
         return await _apiDbContext.Paychecks.Include(e => e.Employee).FirstOrDefaultAsync(d => d.Id == id);
     }
+
+    public async Task Add(Paycheck paycheck)
+    {
+        await _apiDbContext.Paychecks.AddAsync(paycheck);
+        await _apiDbContext.SaveChangesAsync();
+    }
 }
