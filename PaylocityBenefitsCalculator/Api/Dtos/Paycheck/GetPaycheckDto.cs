@@ -10,5 +10,5 @@ public class GetPaycheckDto
     public int PayPeriods { get; set; }
     public decimal EmployeeGrossSalary { get; set; }
     public decimal EmployeeNetSalary { get; set; }
-    public GetEmployeePaycheckDto? Employee { get; set; }
+    public GetEmployeeForPaycheckDto? Employee { get; set; }
 }

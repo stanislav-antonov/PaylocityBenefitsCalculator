@@ -11,7 +11,7 @@ public class MapperProfile : Profile
     public MapperProfile()
     {
         CreateMap<Employee, GetEmployeeDto>();
-        CreateMap<Employee, GetEmployeePaycheckDto>();
+        CreateMap<Employee, GetEmployeeForPaycheckDto>();
         CreateMap<Dependent, GetDependentDto>();
         CreateMap<Paycheck, GetPaycheckDto>();
         CreateMap<Paycheck, CalculatePaycheckDto>();

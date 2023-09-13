@@ -112,7 +112,7 @@ public class EmployeeIntegrationTests : IntegrationTest
         var response = await HttpClient.GetAsync("/api/v1/employees/2/paycheck/calculate");
         var employee = new CalculatePaycheckDto
         {
-            Employee = new GetEmployeePaycheckDto()
+            Employee = new GetEmployeeForPaycheckDto()
             { 
                 FirstName = "Ja",
                 LastName = "Morant"
