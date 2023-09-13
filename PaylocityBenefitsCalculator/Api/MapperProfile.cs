@@ -13,6 +13,10 @@ namespace Api
             CreateMap<Employee, GetEmployeeDto>();
             CreateMap<Dependent, GetDependentDto>();
             CreateMap<Paycheck, GetPaycheckDto>();
+                //.ForMember(m => m.EmployeeFirstName, mm => mm.MapFrom(d => d.Employee.FirstName));
+
+            
+
         }
     }
 }

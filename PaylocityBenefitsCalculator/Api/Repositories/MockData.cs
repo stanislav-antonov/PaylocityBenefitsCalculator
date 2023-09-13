@@ -2,7 +2,7 @@
 
 namespace Api.Repository
 {
-    public static class StaticMockData
+    public static class MockData
     {
         // 26 paychecks per year with deductions spread as evenly as possible on each paycheck
         public const int payPeriodsPerYear = 26;
@@ -30,7 +30,7 @@ namespace Api.Repository
                 FirstName = "Spouse",
                 LastName = "Morant",
                 Relationship = Relationship.Spouse,
-                DateOfBirth = new DateTime(1998, 3, 3)
+                DateOfBirth = new DateTime(1998, 3, 3),
             },
             new()
             {
@@ -38,7 +38,7 @@ namespace Api.Repository
                 FirstName = "Child1",
                 LastName = "Morant",
                 Relationship = Relationship.Child,
-                DateOfBirth = new DateTime(2020, 6, 23)
+                DateOfBirth = new DateTime(2020, 6, 23),
             },
             new()
             {
@@ -46,7 +46,7 @@ namespace Api.Repository
                 FirstName = "Child2",
                 LastName = "Morant",
                 Relationship = Relationship.Child,
-                DateOfBirth = new DateTime(2021, 5, 18)
+                DateOfBirth = new DateTime(2021, 5, 18),
             },
             new()
             {
@@ -54,7 +54,7 @@ namespace Api.Repository
                 FirstName = "DP",
                 LastName = "Jordan",
                 Relationship = Relationship.DomesticPartner,
-                DateOfBirth = new DateTime(1974, 1, 2)
+                DateOfBirth = new DateTime(1974, 1, 2),
             }
         };
 

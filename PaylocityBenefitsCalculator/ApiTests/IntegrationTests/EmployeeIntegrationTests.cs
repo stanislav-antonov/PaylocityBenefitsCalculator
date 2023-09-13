@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Api.Dtos.Dependent;
 using Api.Dtos.Employee;
+using Api.Dtos.Paycheck;
 using Api.Models;
 using Xunit;
 
@@ -102,6 +103,31 @@ public class EmployeeIntegrationTests : IntegrationTest
     public async Task WhenAskedForANonexistentEmployee_ShouldReturn404()
     {
         var response = await HttpClient.GetAsync($"/api/v1/employees/{int.MinValue}");
+        await response.ShouldReturn(HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task WhenAskedForAnEmployeePaycheck_ShouldReturnCorrectPaycheck()
+    {
+        var response = await HttpClient.GetAsync("/api/v1/employees/2/paycheck");
+        var employee = new GetPaycheckDto
+        {
+            EmployeeFirstName = "Ja",
+            EmployeeLastName = "Morant",
+            PayPeriods = 26,
+            EmployeeGrossPay = 3552.51m,
+            EmployeeNetPay = 2189.15m,
+            EmployeeGrossSalary = 92365.22m,
+            EmployeeNetSalary = 56917.92m
+        };
+
+        await response.ShouldReturn(HttpStatusCode.OK, employee);
+    }
+
+    [Fact]
+    public async Task WhenAskedForANonExistentEmployeePaycheck_ShouldReturn404()
+    {
+        var response = await HttpClient.GetAsync($"/api/v1/employees/{int.MinValue}/paycheck");
         await response.ShouldReturn(HttpStatusCode.NotFound);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Api.Dtos.Employee;
+using Api.Dtos.Paycheck;
 using Api.Models;
 using Api.Repository;
+using Api.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -12,11 +14,13 @@ namespace Api.Controllers;
 public class EmployeesController : AbstractController
 {
     private readonly IEmployeesRepository _employeesRepository;
+    private readonly IPaycheckService _paycheckService;
 
-    public EmployeesController(IEmployeesRepository employeesRepository, IMapper mapper, 
-        ILogger<EmployeesController> logger) 
+    public EmployeesController(IEmployeesRepository employeesRepository,
+        IPaycheckService paycheckService, IMapper mapper, ILogger<EmployeesController> logger) 
         : base(mapper, logger)
     {
+        _paycheckService = paycheckService;
         _employeesRepository = employeesRepository;
     }
     
@@ -35,6 +39,15 @@ public class EmployeesController : AbstractController
     {
         return await Handle<List<GetEmployeeDto>>(async () => {
             return await _employeesRepository.GetAll();
+        });
+    }
+
+    [SwaggerOperation(Summary = "Get paycheck for employee id")]
+    [HttpGet("{id}/Paycheck")]
+    public async Task<ActionResult<ApiResponse<GetPaycheckDto>>> GetPaycheck(int id)
+    {
+        return await Handle<GetPaycheckDto>(async () => {
+            return await _paycheckService.CalculatePaycheck(id);
         });
     }
 }

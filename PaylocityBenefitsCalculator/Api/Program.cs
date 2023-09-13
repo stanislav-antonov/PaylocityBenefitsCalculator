@@ -1,4 +1,5 @@
 using Api;
+using Api.Models;
 using Api.Repositories;
 using Api.Repository;
 using Api.Services;
@@ -25,6 +26,8 @@ internal class Program
         AddDomainServices(builder);
 
         var app = builder.Build();
+
+        PopulateMockData(app);
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -81,19 +84,32 @@ internal class Program
 
     private static void AddRepositories(WebApplicationBuilder builder)
     {
-        builder.Services.AddSingleton<IEmployeesRepository, EmployeesRepository>();
-        builder.Services.AddSingleton<IDependentsRepository, DependentsRepository>();
-        builder.Services.AddSingleton<IPaycheckCalcParamsRepository, PaycheckCalcParamsRepository>();
+        builder.Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
+        builder.Services.AddScoped<IDependentsRepository, DependentsRepository>();
+        builder.Services.AddScoped<IPaychecksRepository, PaychecksRepository>();
+        builder.Services.AddScoped<IPaycheckCalcParamsRepository, PaycheckCalcParamsRepository>();
+        builder.Services.AddScoped<ApiDbContext>();
     }
 
     private static void AddDomainServices(WebApplicationBuilder builder)
     {
-        builder.Services.AddSingleton<IPaycheckService, PaycheckService>();
+        builder.Services.AddScoped<IPaycheckService, PaycheckService>();
     }
 
     private static void AddLogging(WebApplicationBuilder builder)
     {
         builder.Logging.ClearProviders();
         builder.Logging.AddConsole();
+    }
+
+    private static void PopulateMockData(WebApplication app)
+    {
+        using var apiDbContext = new ApiDbContext();
+        foreach (var employee in MockData.Employees)
+        {
+            apiDbContext.Employees.Add(employee);
+        }
+
+        apiDbContext.SaveChanges();
     }
 }

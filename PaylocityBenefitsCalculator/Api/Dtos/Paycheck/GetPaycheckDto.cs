@@ -2,7 +2,8 @@
 
 public class GetPaycheckDto
 {
-    public int EmployeeId { get; set; }
+    public string? EmployeeFirstName { get; set; }
+    public string? EmployeeLastName { get; set; }
     public decimal EmployeeGrossPay { get; set; }
     public decimal EmployeeNetPay { get; set; }
     public int PayPeriods { get; set; }

@@ -68,6 +68,7 @@ public class PaycheckService : IPaycheckService
         return new Paycheck()
         {
             EmployeeId = employeeId,
+            Employee = employee,
             EmployeeGrossPay = Decimal.Round(employeeGrossPay, 2),
             EmployeeNetPay = Decimal.Round(employeeNetPay, 2),
             EmployeeGrossSalary = Decimal.Round(employeeGrossSalary, 2),
