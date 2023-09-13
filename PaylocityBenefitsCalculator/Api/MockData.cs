@@ -1,26 +1,31 @@
 ﻿using Api.Models;
 
-namespace Api.Repository;
+namespace Api;
 
 public static class MockData
 {
-    // 26 paychecks per year with deductions spread as evenly as possible on each paycheck
-    public const int payPeriodsPerYear = 26;
+    public static PaycheckProfile PaycheckProfile = new()
+    {
+        Id = 1,
 
-    // Employees have a base cost of $1,000 per month(for benefits)
-    public const decimal employeeCostPerMonth = 1000;
+        // 26 paychecks per year with deductions spread as evenly as possible on each paycheck
+        PayPeriodsPerYear = 26,
 
-    // Employees that make more than $80,000 per year will incur an additional 2% of their
-    // yearly salary in benefits costs
-    public const decimal employeeSalaryThreshold = 80000;
-    public const int employeeSalaryPercent = 2;
+        // Employees have a base cost of $1,000 per month(for benefits)
+        EmployeeCostPerMonth = 1000,
 
-    // Each dependent represents an additional $600 cost per month (for benefits)
-    public const decimal dependentCostPerMonth = 600;
+        // Employees that make more than $80,000 per year will incur an additional 2% of their
+        // yearly salary in benefits costs
+        EmployeeSalaryThreshold = 80000,
+        EmployeeSalaryPercent = 2,
 
-    // Dependents that are over 50 years old will incur an additional $200 per month
-    public const int dependentAgeThreshold = 50;
-    public const decimal dependentAgeCostPerMonth = 200;
+        // Each dependent represents an additional $600 cost per month (for benefits)
+        DependentCostPerMonth = 600,
+
+        // Dependents that are over 50 years old will incur an additional $200 per month
+        DependentAgeThreshold = 50,
+        DependentAgeCostPerMonth = 200,
+    };
 
     public static List<Dependent> Dependents => new()
     {

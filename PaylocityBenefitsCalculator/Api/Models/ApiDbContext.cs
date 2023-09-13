@@ -7,10 +7,10 @@ public class ApiDbContext : DbContext
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Dependent> Dependents { get; set; }
     public DbSet<Paycheck> Paychecks { get; set; }
+    public DbSet<PaycheckProfile> PaycheckProfiles { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseInMemoryDatabase(databaseName: "Db");
+    public ApiDbContext(DbContextOptions options) :base(options)
+    { 
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

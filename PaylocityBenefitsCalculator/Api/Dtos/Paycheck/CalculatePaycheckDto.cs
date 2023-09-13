@@ -2,9 +2,8 @@
 
 namespace Api.Dtos.Paycheck;
 
-public class GetPaycheckDto
+public class CalculatePaycheckDto
 {
-    public int Id { get; set; }
     public decimal EmployeeGrossPay { get; set; }
     public decimal EmployeeNetPay { get; set; }
     public int PayPeriods { get; set; }

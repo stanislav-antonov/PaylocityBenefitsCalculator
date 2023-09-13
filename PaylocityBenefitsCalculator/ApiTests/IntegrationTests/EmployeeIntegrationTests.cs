@@ -109,11 +109,14 @@ public class EmployeeIntegrationTests : IntegrationTest
     [Fact]
     public async Task WhenAskedForAnEmployeePaycheck_ShouldReturnCorrectPaycheck()
     {
-        var response = await HttpClient.GetAsync("/api/v1/employees/2/paycheck");
-        var employee = new GetPaycheckDto
+        var response = await HttpClient.GetAsync("/api/v1/employees/2/paycheck/calculate");
+        var employee = new CalculatePaycheckDto
         {
-            EmployeeFirstName = "Ja",
-            EmployeeLastName = "Morant",
+            Employee = new GetEmployeePaycheckDto()
+            { 
+                FirstName = "Ja",
+                LastName = "Morant"
+            },
             PayPeriods = 26,
             EmployeeGrossPay = 3552.51m,
             EmployeeNetPay = 2189.15m,
@@ -127,7 +130,7 @@ public class EmployeeIntegrationTests : IntegrationTest
     [Fact]
     public async Task WhenAskedForANonExistentEmployeePaycheck_ShouldReturn404()
     {
-        var response = await HttpClient.GetAsync($"/api/v1/employees/{int.MinValue}/paycheck");
+        var response = await HttpClient.GetAsync($"/api/v1/employees/{int.MinValue}/paycheck/calculate");
         await response.ShouldReturn(HttpStatusCode.NotFound);
     }
 }

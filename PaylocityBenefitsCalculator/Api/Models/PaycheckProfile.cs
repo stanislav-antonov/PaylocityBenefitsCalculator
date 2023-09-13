@@ -1,7 +1,8 @@
 ﻿namespace Api.Models;
 
-public class PaycheckCalcParams
+public class PaycheckProfile
 {
+    public int Id { get; set; }
     public int PayPeriodsPerYear { get; set; }
     public decimal EmployeeCostPerMonth { get; set; }
     public decimal EmployeeSalaryThreshold { get; set; }

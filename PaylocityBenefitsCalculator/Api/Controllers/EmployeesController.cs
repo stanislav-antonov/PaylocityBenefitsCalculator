@@ -42,12 +42,21 @@ public class EmployeesController : AbstractController
         });
     }
 
-    [SwaggerOperation(Summary = "Get paycheck for employee id")]
-    [HttpGet("{id}/Paycheck")]
-    public async Task<ActionResult<ApiResponse<GetPaycheckDto>>> GetPaycheck(int id)
+    [SwaggerOperation(Summary = "Calculate paycheck by employee id")]
+    [HttpGet("{id}/Paycheck/Calculate")]
+    public async Task<ActionResult<ApiResponse<CalculatePaycheckDto>>> CalculatePaycheck(int id)
     {
-        return await Handle<GetPaycheckDto>(async () => {
+        return await Handle<CalculatePaycheckDto>(async () => {
             return await _paycheckService.CalculatePaycheck(id);
+        });
+    }
+
+    [SwaggerOperation(Summary = "Calculate paycheck by employee id and persist it")]
+    [HttpPost("{id}/Paycheck/CalculateAndStore")]
+    public async Task<ActionResult<ApiResponse<CalculateAndStorePaycheckDto>>> CalculateAndStorePaycheck(int id)
+    {
+        return await Handle<CalculateAndStorePaycheckDto>(async () => {
+            return await _paycheckService.CalculatePaycheck(id, store: true);
         });
     }
 }

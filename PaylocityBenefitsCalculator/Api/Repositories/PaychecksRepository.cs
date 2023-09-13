@@ -14,11 +14,11 @@ public class PaychecksRepository : IPaychecksRepository
 
     public async Task<IEnumerable<Paycheck>> GetAll()
     {
-        return await _apiDbContext.Paychecks.ToListAsync();
+        return await _apiDbContext.Paychecks.Include(e => e.Employee).ToListAsync();
     }
 
     public async Task<Paycheck?> Get(int id)
     {
-        return await _apiDbContext.Paychecks.FirstOrDefaultAsync(d => d.Id == id);
+        return await _apiDbContext.Paychecks.Include(e => e.Employee).FirstOrDefaultAsync(d => d.Id == id);
     }
 }

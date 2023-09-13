@@ -4,6 +4,7 @@ using Api.Repositories;
 using Api.Repository;
 using Api.Services;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 internal class Program
@@ -25,9 +26,16 @@ internal class Program
         AddRepositories(builder);
         AddDomainServices(builder);
 
+        builder.Services.AddDbContext<ApiDbContext>(c => c.UseInMemoryDatabase("Db"));
+
         var app = builder.Build();
 
-        PopulateMockData(app);
+        using (var scope = app.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+
+            PopulateMockData(services);
+        }
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -87,8 +95,7 @@ internal class Program
         builder.Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
         builder.Services.AddScoped<IDependentsRepository, DependentsRepository>();
         builder.Services.AddScoped<IPaychecksRepository, PaychecksRepository>();
-        builder.Services.AddScoped<IPaycheckCalcParamsRepository, PaycheckCalcParamsRepository>();
-        builder.Services.AddScoped<ApiDbContext>();
+        builder.Services.AddScoped<IPaycheckProfilesRepository, PaycheckProfilesRepository>();
     }
 
     private static void AddDomainServices(WebApplicationBuilder builder)
@@ -102,14 +109,14 @@ internal class Program
         builder.Logging.AddConsole();
     }
 
-    private static void PopulateMockData(WebApplication app)
+    private static void PopulateMockData(IServiceProvider serviceProvider)
     {
-        using var apiDbContext = new ApiDbContext();
-        foreach (var employee in MockData.Employees)
-        {
-            apiDbContext.Employees.Add(employee);
-        }
+        using var context = new ApiDbContext(
+            serviceProvider.GetRequiredService<DbContextOptions<ApiDbContext>>());
 
-        apiDbContext.SaveChanges();
+        context.Employees.AddRange(MockData.Employees);
+        context.PaycheckProfiles.Add(MockData.PaycheckProfile);
+
+        context.SaveChanges();
     }
 }
