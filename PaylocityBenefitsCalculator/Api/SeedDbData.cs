@@ -2,9 +2,9 @@
 
 namespace Api;
 
-public static class MockData
+public static class SeedDbData
 {
-    public static PaycheckProfile PaycheckProfile = new()
+    public static readonly PaycheckProfile PaycheckProfile = new()
     {
         Id = 1,
 
@@ -27,7 +27,7 @@ public static class MockData
         DependentAgeCostPerMonth = 200,
     };
 
-    public static List<Dependent> Dependents => new()
+    public static readonly List<Dependent> Dependents = new()
     {
         new()
         {
@@ -63,7 +63,7 @@ public static class MockData
         }
     };
 
-    public static List<Employee> Employees => new()
+    public static readonly List<Employee> Employees = new()
     {
         new()
         {

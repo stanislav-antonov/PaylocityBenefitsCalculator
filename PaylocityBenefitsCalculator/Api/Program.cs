@@ -31,7 +31,7 @@ internal class Program
 
         using (var scope = app.Services.CreateScope())
         {
-            PopulateMockData(scope.ServiceProvider);
+            SeedDb(scope.ServiceProvider);
         }
 
         // Configure the HTTP request pipeline.
@@ -111,13 +111,13 @@ internal class Program
         builder.Services.AddDbContext<ApiDbContext>(c => c.UseInMemoryDatabase("Db"));
     }
 
-    private static void PopulateMockData(IServiceProvider serviceProvider)
+    private static void SeedDb(IServiceProvider serviceProvider)
     {
         using var context = new ApiDbContext(
             serviceProvider.GetRequiredService<DbContextOptions<ApiDbContext>>());
 
-        context.Employees.AddRange(MockData.Employees);
-        context.PaycheckProfiles.Add(MockData.PaycheckProfile);
+        context.Employees.AddRange(SeedDbData.Employees);
+        context.PaycheckProfiles.Add(SeedDbData.PaycheckProfile);
 
         context.SaveChanges();
     }
