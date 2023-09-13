@@ -25,16 +25,13 @@ internal class Program
 
         AddRepositories(builder);
         AddDomainServices(builder);
-
-        builder.Services.AddDbContext<ApiDbContext>(c => c.UseInMemoryDatabase("Db"));
+        AddDbContext(builder);
 
         var app = builder.Build();
 
         using (var scope = app.Services.CreateScope())
         {
-            var services = scope.ServiceProvider;
-
-            PopulateMockData(services);
+            PopulateMockData(scope.ServiceProvider);
         }
 
         // Configure the HTTP request pipeline.
@@ -107,6 +104,11 @@ internal class Program
     {
         builder.Logging.ClearProviders();
         builder.Logging.AddConsole();
+    }
+
+    private static void AddDbContext(WebApplicationBuilder builder)
+    {
+        builder.Services.AddDbContext<ApiDbContext>(c => c.UseInMemoryDatabase("Db"));
     }
 
     private static void PopulateMockData(IServiceProvider serviceProvider)
