@@ -1,11 +1,9 @@
 ﻿using Api.Models;
 
-namespace Api.Repository
-{
-    public interface IEmployeesRepository
-    {
-        public Task<IEnumerable<Employee>> GetAll();
+namespace Api.Repository;
 
-        public Task<Employee?> Get(int id);
-    }
+public interface IEmployeesRepository
+{
+    public Task<Employee?> Get(int id);
+    public Task<IEnumerable<Employee>> GetAll();
 }

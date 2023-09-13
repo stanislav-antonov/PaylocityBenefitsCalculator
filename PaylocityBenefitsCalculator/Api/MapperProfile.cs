@@ -4,19 +4,14 @@ using Api.Dtos.Paycheck;
 using Api.Models;
 using AutoMapper;
 
-namespace Api
+namespace Api;
+
+public class MapperProfile : Profile
 {
-    public class MapperProfile : Profile
+    public MapperProfile()
     {
-        public MapperProfile()
-        {
-            CreateMap<Employee, GetEmployeeDto>();
-            CreateMap<Dependent, GetDependentDto>();
-            CreateMap<Paycheck, GetPaycheckDto>();
-                //.ForMember(m => m.EmployeeFirstName, mm => mm.MapFrom(d => d.Employee.FirstName));
-
-            
-
-        }
+        CreateMap<Employee, GetEmployeeDto>();
+        CreateMap<Dependent, GetDependentDto>();
+        CreateMap<Paycheck, GetPaycheckDto>();
     }
 }
